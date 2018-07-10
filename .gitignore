@@ -361,7 +361,7 @@ typings/
 *.css
 *.htm
 *.html
-*.js
+#*.js
 *.jsp
 *.php
 *.rss
