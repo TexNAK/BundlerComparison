@@ -16,6 +16,8 @@ addons:
       - texlive-pictures
       - pgf
       - lacheck
+notifications:
+  email: false
 script:
   - mkdir _build
   - pdflatex -interaction nonstopmode -output-directory _build tex/main.tex
