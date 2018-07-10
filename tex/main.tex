@@ -1,7 +1,93 @@
 \documentclass[11pt]{article}
 
+%%%%%%%%%%%%%
+%% Imports %%
+%%%%%%%%%%%%%
+\usepackage[a4paper, margin=2cm, top=4cm, bottom=3cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{cite}
+\usepackage{url}
+
+%%%%%%%%%%%%
+%% Colors %%
+%%%%%%%%%%%%
+\definecolor{nordakademie-blue}{RGB}{2,34,94}
+
+%%%%%%%%%%%%%%%%
+%% Page Style %%
+%%%%%%%%%%%%%%%%
+\pagestyle{fancy}
+\lhead{\textcolor{nordakademie-blue}{\uppercase{Transferleistung\\ Theorie \& Praxis}}}
+\rhead{\textcolor{nordakademie-blue}{\includegraphics[height=0.85cm,keepaspectratio]{img/NAK-logo}}}
+\cfoot{\thepage}
+\bibliographystyle{unsrt}
+\linespread{1.5}
+
+%%%%%%%%%%%%%%
+%% Commands %%
+%%%%%%%%%%%%%%
+\newcommand*{\SignatureAndDate}[1]{%
+    \par\noindent\makebox[2.5in]{\hrulefill}
+           \hfill\makebox[2.0in]{\hrulefill}
+    \par\noindent\makebox[2.5in][l]{#1}
+           \hfill\makebox[2.0in][l]{Datum}
+}
+
+%%%%%%%%%%%%%%
+%% Document %%
+%%%%%%%%%%%%%%
 \begin{document}
 
-Hello world!
+    %%%%%%%%%%%%%%%
+    %% Frontpage %%
+    %%%%%%%%%%%%%%%
+    {\huge Transferleistung 1}
+    \vspace{1cm}
+
+    \begin{center}
+        \begin{tabularx}{\textwidth}{r|X}
+            Matrikelnummer & 8252 \\\midrule
+            Thema & Was auch immer \\\midrule % TODO Add topic to front page
+            Studiengang, Zenturie & Angewandte Informatik, A17b\
+        \end{tabularx}
+    \end{center}
+    \pagebreak
+
+    \tableofcontents
+    \listoffigures
+    \listoftables
+    \pagebreak
+    
+   	%%%%%%%%%%%%%
+    %% Content %%
+    %%%%%%%%%%%%%
+    \section{Einführung}
+    % TODO Add content
+    Here shall be content!
+    
+    \pagebreak
+
+    %%%%%%%%%%%%%%
+    %% Appendix %%
+    %%%%%%%%%%%%%%
+    \hspace{0pt}
+    \vfill
+    \subsection*{Eidesstattliche Erklärung}
+        Hiermit erkläre ich an Eides statt, dass ich die vorliegende Arbeit ohne Hilfe Dritter und ohne Benutzung anderer als der angegebenen Hilfsmittel angefertigt habe. Die aus fremden Quellen direkt oder indirekt übernommenen Gedanken sind als solche kenntlich gemacht. Die Arbeit wurde bisher in gleicher oder ähnlicher Form weder von mir noch von jemand anderem als Prüfungsleistung vorgelegt.
+        \vspace{2cm}
+        \SignatureAndDate{Unterschrift}
+    \vfill
+    \hspace{0pt}
+    \pagebreak
+
+    \nocite{*}
+    \bibliography{main.bib}
 
 \end{document}
