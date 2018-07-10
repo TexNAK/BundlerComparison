@@ -1,0 +1,32 @@
+language: node_js
+node_js:
+  - '7'
+cache: yarn
+addons:
+  apt:
+    packages:
+      - texlive-latex-recommended
+      - dvipng
+      - texlive-lang-european
+      - texlive-lang-german
+      - latex-xcolor
+      - texlive-fonts-recommended
+      - texlive-latex-extra
+      - texlive-fonts-extra
+      - texlive-pictures
+      - pgf
+      - lacheck
+script:
+  - mkdir _build
+  - pdflatex -interaction nonstopmode -output-directory _build tex/main.tex
+  - yarn danger ci
+deploy:
+  provider: releases
+  api_key:
+    secure: a1eWg9BnEo3srgQd8HjOo8UwiQg4LFGdjBxYbT3QDB68o/grbTuqr069hQljHUDWF2Fe5ZkC1qo7iwgY+90DzYf6bu0tWJbAGlaIBLMhSjSqrfFOnXxn4hyS7xTBu6HFyj9y+5Wvkx2BvwAB0KPO1lWdemmXXI3T02BLjNtXFMki4/iHOFUTCJkP4kGVvMBusJRq2C8rBSiwnggoz0okADLFuQEoQRKGUkbDNDSP6KVw8QpNfp8eLhvG7Uk2oSQicpD010ZExx9eMlDD6mSncCvIQXqtb5lCw2xfzG7/o1gyOfGflTl2ldPC5+0/DCTN07VxdjbFuaM3DNXRItdRhQQJtZvymEEjGBsoOxTHVFwF2S2LAv/+YoAOiY1Ki/ukldZmAXfU9UWos/zhR65FupT27qSQXnpO7PQaYld5MDZTmvnNT3TFtLWzxmSxtK3UARE69DNH+eBz8DNTg0TQAWd/ZEfYItFfEbKj9I9dWdt/Zmp6AlnRwCd8mjsradYUcEdgA2dLNiMnV+3jMjsBJlITu48+e3v0QP3tz4yRhZP0aTV5bO8WSWoprbzDd7LoTkBykwZogTzV8CgWK1Cpl0vLWqsBtDuGh4qjsa8smleXMB3wQnixCf5XTYjW8cHATcm6O1tYG9YAuxhO5PcwAnRuuyAWe/YJ1OC9K39Ibnc=
+  file:
+    - _build/main.pdf
+    - paperwork/Auftragsklärung_Transferleistung.pdf
+    - paperwork/Selbstreflexion_Transferleistungen.pdf
+  on:
+    repo: TexNAK/WebBundlerOptimization
