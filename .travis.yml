@@ -20,7 +20,7 @@ notifications:
   email: false
 script:
   - mkdir _build
-  - cd tex && pdflatex -interaction nonstopmode -output-directory ../_build ./main.tex
+  - cd tex && pdflatex -interaction nonstopmode -output-directory ../_build ./main.tex && cd ..
   - yarn danger ci
 deploy:
   provider: releases
