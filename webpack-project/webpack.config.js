@@ -106,8 +106,8 @@ module.exports = smp.wrap({
         new UglifyJsPlugin({
             sourceMap: true,
             uglifyOptions: {
-                compress: false,
-                mangle: false
+                // compress: false,
+                // mangle: false
                 // compress: {
                 //     arrows: false,
                 //     booleans: false,
