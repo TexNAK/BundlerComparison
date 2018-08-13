@@ -1,4 +1,5 @@
 {
+  "license": "MIT",
   "dependencies": {
     "danger": "^3.7.0"
   }
