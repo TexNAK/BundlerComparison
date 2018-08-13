@@ -12,6 +12,7 @@ module.exports = smp.wrap({
     mode: 'development',
     entry: './src/index.jsx',
     devtool: 'source-map',
+    // devtool: 'cheap-module-eval-source-map',
     devServer: {
         // hot: true,
         contentBase: './dist'
@@ -104,7 +105,6 @@ module.exports = smp.wrap({
             },
         }),
         new UglifyJsPlugin({
-            sourceMap: true,
             uglifyOptions: {
                 // compress: false,
                 // mangle: false

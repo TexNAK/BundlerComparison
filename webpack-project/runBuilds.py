@@ -67,16 +67,16 @@ def runBuild():
 
 # Run a initial build to populate any caches
 print("Running initial build")
-#runBuild()
+runBuild()
 
-buildCount = 5
+buildCount = 10
 results = []
 for i in range(0, buildCount):
     print("Build #" + str(i))
     
     # Execute a build to create a baseline
     print("\tRunning pre-build")
-    #runBuild()
+    runBuild()
 
     # Modify some files to make for a realistic scenario
     print("\tModifying files")
@@ -187,6 +187,7 @@ def getLastValues(lst):
 
 finalUserTime = getLastValues(userTimeData)[2::]
 finalSystemTime = getLastValues(systemTimeData)[2::]
-print("User time:\t" + str(finalUserTime))
-print("System time:\t" + str(finalSystemTime))
-print("Total time:\t" + str(numpy.add(finalSystemTime, finalUserTime)))
+with open("data/times.txt", "a") as times:
+    times.write("User time:\t" + str(finalUserTime) + "\n")
+    times.write("System time:\t" + str(finalSystemTime) + "\n")
+    times.write("Total time:\t" + str(numpy.add(finalSystemTime, finalUserTime)) + "\n")
