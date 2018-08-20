@@ -35,8 +35,10 @@ def runBuild():
             # Save the PID for later comparison and check for changes
             if webpackPID is None:
                 webpackPID = process.pid
+                print(process.cmdline())
             elif not webpackPID == process.pid:
                 print("ERROR - The PID of webpack apparently changed. This is not supposed to happen")
+                print(process.cmdline())
                 exit(1)
 
             # Store the memory usage information in MiB
@@ -187,9 +189,13 @@ def getLastValues(lst):
 
 finalUserTime = getLastValues(userTimeData)[2::]
 finalSystemTime = getLastValues(systemTimeData)[2::]
-finalTotalTime = numpy.add(finalSystemTime, finalUserTime)
+finalTotalTime = []
+try:
+    finalTotalTime = numpy.add(finalSystemTime, finalUserTime)
+except:
+    finalTotalTime = finalUserTime
 avgTotalTime = numpy.average(finalTotalTime)
-with open("data/times.txt", "a") as times:
+with open("data/times.txt", "w") as times:
     times.write("User time:\t" + str(finalUserTime) + "\n")
     times.write("System time:\t" + str(finalSystemTime) + "\n")
     times.write("Total time:\t" + str(finalTotalTime) + "\n")

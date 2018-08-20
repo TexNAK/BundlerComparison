@@ -8,6 +8,8 @@ const smp = new SpeedMeasurePlugin({
     outputFormat: 'human'
 });
 
+const outputPath = path.join(process.cwd(), 'dist');
+
 module.exports = smp.wrap({
     mode: 'development',
     entry: './src/index.jsx',
@@ -88,6 +90,10 @@ module.exports = smp.wrap({
         }
     },
     plugins: [
+        new webpack.DllReferencePlugin({
+            context: process.cwd(),
+            manifest: require(path.join(outputPath, 'ReactStuff.json'))
+        }),
         new HtmlWebpackPlugin({
             inject: true,
             template: 'src/index.html',
