@@ -11,8 +11,8 @@ const smp = new SpeedMeasurePlugin({
 module.exports = smp.wrap({
     mode: 'development',
     entry: './src/index.jsx',
-    devtool: 'source-map',
-    // devtool: 'cheap-module-eval-source-map',
+    // devtool: 'source-map',
+    devtool: 'cheap-module-eval-source-map',
     devServer: {
         // hot: true,
         contentBase: './dist'
@@ -108,26 +108,6 @@ module.exports = smp.wrap({
             uglifyOptions: {
                 // compress: false,
                 // mangle: false
-                // compress: {
-                //     arrows: false,
-                //     booleans: false,
-                //     collapse_vars: false,
-                //     computed_props: false,
-                //     conditionals: false,
-                //     dead_code: false,
-                //     evaluate: false,
-                //     hoist_props: false,
-                //     if_return: false,
-                //     inline: false,
-                //     join_vars: false,
-                //     loops: false,
-                //     negate_iife: false,
-                //     properties: false,
-                //     reduce_funcs: false,
-                //     switches: false,
-                //     typeofs: false,
-                //     unused: false
-                // }
             }
         }),
         // new webpack.HotModuleReplacementPlugin()
