@@ -88,7 +88,7 @@
     \begin{center}
         \begin{tabularx}{\textwidth}{r|X}
             Matrikelnummer & 8252 \\\midrule
-            Thema & Optimierung der Build-Dauer eines Web Application Bundler durch Anpassung der Konfiguration und dessen Auswirkung auf den Entwicklungsprozess \\\midrule % TODO Add topic to front page
+            Thema & Optimierung der Build-Dauer eines Web Application Bundler durch Anpassung der Konfiguration und dessen Auswirkung auf den Entwicklungsprozess \\\midrule
             Studiengang, Zenturie & Angewandte Informatik, A17b\
         \end{tabularx}
     \end{center}
@@ -108,12 +108,14 @@
 		Zusätzlich zu der Konkatenation von Modulen übernehmen solche Tools die Transformation und Transpilation von Eingabedateien um z.B. Textdateien oder Bilder in den Code zu integrieren, Dateien zu optimieren und komprimieren oder Module, welche in neuen \Gls{js} oder \Gls{css} Versionen geschrieben wurden, in alte Versionen zu übersetzen um Kompatibilität mit älteren Browsern zu gewährleisten.\\
 			% Good place to use sources why this is done
 		\\
-    	Dieses Transferleistung befasst sich mit der Beeinflussbarkeit der Build-Zeit eines \Gls{bundler} durch Anpassungen an der Konfiguration in Bezug auf die Geschwindigkeit des Softwareenwicklungsprozess. Ein \Gls{bundler} ist ein Tool, welches sämtliche Ressourcen und Abhängigkeiten einer \Gls{app} analysiert und in wenige Ausgabedateien zusammenfasst. Dabei werden optional Optimierungsschritte durchgeführt um die Anzahl und Größe der Ausgabedateien zu reduzieren. Sowohl die Analyse der Abhängigkeiten als auch das Bundling und die Optimierung können durch Konfigurationsdateien angepasst werden. In dieser Arbeit werden die folgenden Forschungsfragen näher beleuchtet:
+    	Dieses Transferleistung befasst sich mit der Beeinflussbarkeit der Build-Zeit eines \Gls{bundler} durch Anpassungen an der Konfiguration in Bezug auf die Geschwindigkeit des Softwareenwicklungsprozess. In dieser Arbeit werden die folgenden Forschungsfragen näher beleuchtet:
 	    	\begin{enumerate}
 		    	\item Ist die Build Performance relevant für den Entwicklungsprozess? \label{question0}
 		    	\item Welche Faktoren haben eine Auswirkung auf die Dauer des Build? \label{question1}
 		    	\item Lassen sich diese Faktoren in einem Software-Projekt beeinflussen? \label{question2}
 		    \end{enumerate}
+		    
+	    \pagebreak
 
 		\section{Relevanz für die PPI AG}
 			Bei der PPI AG gibt es mehrere Projekte, welche unter anderem die Entwicklung einer Web-App umfassen. Dies schließt zum Beispiel das Studenten-Verwaltungstool StuMaTo ein, welches der Verwaltung und Verteilung von Aufgaben an die Studenten dient. Dieses Tool wird in der kommenden Praxisphase von einem kleinen Team aus Studenten weiterentwickelt werden, wobei eine direkte Relevanz der Ergebnisse dieser Transferleistung sich positiv auf den Entwicklungsprozess auswirken könnte.
@@ -129,7 +131,7 @@
 
 				\paragraph{Bundling Tool} In vielen Projekten wird die zu nutzende Technologie meist von Projektleitern oder Kunden vorgeschrieben. Entsprechend wurde für dieses Projekt der am weitesten verbreitete\footnote{\url{http://www.npmtrends.com/webpack-vs-parcel-bundler-vs-rollup-vs-browserify}} \Gls{bundler} \emph{Webpack} verwendet um eine möglichst einfache Übertragung der Konfigurationsoptionen auf andere Projekte zu ermöglichen.
 
-				\paragraph{React} Bei der Entwicklung von \Glspl{app} werden häufig Frameworks wie z.B. jQuery, React, Angular oder VueJS verwendet. In diesem Projekt wird \emph{React} aufgrund seiner Popularität\footnote{\url{http://www.npmtrends.com/angular-vs-ember-source-vs-react-vs-vue}} und den vorhandenen Kenntnissen des Authors verwendet.
+				\paragraph{React} Bei der Entwicklung von \Glspl{app} werden häufig Frameworks wie z.B. React, Angular oder VueJS verwendet. In diesem Projekt wird \emph{React} aufgrund seiner Popularität\footnote{\url{http://www.npmtrends.com/angular-vs-ember-source-vs-react-vs-vue}} und den vorhandenen Kenntnissen des Authors verwendet.
 
 				\paragraph{Material UI} Als Library für grafische Komponenten wurde das Projekt \emph{Material UI}\footnote{\url{https://material-ui.com}} gewählt, da es aufgrund der vorhandenen Beispiel in der Dokumentation ein schnelles Prototyping der Dummy-UI ermöglicht. Außerdem wurde die Schriftart Roboto und das Material-UI Icon-Set von Google eingebunden, da sie den UI Guidelines\footnote{\url{https://material.io/design/introduction}} der Library entsprechen und von dieser empfohlen werden.
 
@@ -164,7 +166,6 @@
 			% TODO Cite smth that defines what User and System time are
 			% TODO Note that all following graphs share the same axis types
 
-			% Baseline
 			\begin{figure}[p]
 	            \includegraphics[width=\textwidth]{img/baseline_duration.pdf}
 	            \caption{Basismessung | CPU Zeit}
@@ -259,9 +260,34 @@
 
 	\chapter{Auswertung}
 		Let's hope it got improved! % TODO Evaluate what happened
+		\begin{table}[h]
+			\centering
+            \bgroup
+            \def\arraystretch{1.5}
+			\begin{tabular}{ l | c | c }
+				Optimierung & \Gls{cpuTime} & Speicherverbrauch \\
+				\hline
+				\hline
+				Baseline & 26,00s & 557MB \\
+				Minifikation | keine Optimierung & 13,36s & 369MB \\
+				Minifikation | kein \Gls{mangling} & 23,34s & 395MB \\
+				Scoped compilation & 2,93s & 152MB \\
+				Caching & 22,90s & 442MB \\
+				Source-Maps (modulbasiert) & 12,00s & 549MB \\
+				Inkrementelle In-Memory Builds & 29,99s & --- \\
+				\Gls{hmr} & 35,42s & --- \\
+				\hline
+				Gesamt | Non-Destruktiv & 2,20s & 146MB \\
+				Gesamt | Destruktiv & 2,60s & 245MB \\
+				Gesamt | Destruktiv (ohne Cache) & 1,08s & 246MB \\
+			\end{tabular}
+			\egroup
+            \caption{Übersicht der Optimierungsresultate}
+            \label{table:optimizationResultOverview}
+		\end{table}
 		
 		\section{Beeinflussbarkeit der Build Dauer}
-			To be done. Beantwortung der Forschungsfrage \label{question2} % TODO Write this argument
+			To be done. Beantwortung der Forschungsfrage \ref{question2} % TODO Write this argument
 
 		\section{Zusammenfassung}
 			What have we learned? What haven't we looked at (Multithreading, Code-Splitting, ...) % TODO Write this argument
