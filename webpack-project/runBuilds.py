@@ -35,10 +35,10 @@ def runBuild():
             # Save the PID for later comparison and check for changes
             if webpackPID is None:
                 webpackPID = process.pid
-                print(process.cmdline())
+                # print(process.cmdline())
             elif not webpackPID == process.pid:
                 print("ERROR - The PID of webpack apparently changed. This is not supposed to happen")
-                print(process.cmdline())
+                # print(process.cmdline())
                 exit(1)
 
             # Store the memory usage information in MiB

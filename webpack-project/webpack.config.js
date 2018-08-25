@@ -14,9 +14,10 @@ module.exports = smp.wrap({
     mode: 'development',
     entry: './src/index.jsx',
     // devtool: 'source-map',
+    // # Cheap source maps
     devtool: 'cheap-module-eval-source-map',
     devServer: {
-        // hot: true,
+        hot: true,
         contentBase: './dist'
     },
     output: {
@@ -60,15 +61,15 @@ module.exports = smp.wrap({
                     {
                         test: /\.(js|jsx)$/,
                         exclude: /(node_modules|bower_components)/,
-                        use: ['cache-loader', {
+                        use: [{
                             loader: 'babel-loader',
                             options: {
                                 compact: true,
                                 cacheDirectory: true,
-                                // plugins: ['react-hot-loader/babel', 'transform-class-properties'],
-                                // presets: ['env', 'react', 'react-hmre']
-                                plugins: ['transform-class-properties'],
-                                presets: ['env', 'react']
+                                plugins: ['react-hot-loader/babel', 'transform-class-properties'],
+                                presets: ['env', 'react', 'react-hmre']
+                                // plugins: ['transform-class-properties'],
+                                // presets: ['env', 'react']
                             }
                         }]
                     },
@@ -90,6 +91,7 @@ module.exports = smp.wrap({
         }
     },
     plugins: [
+        // # Scoped compilation
         new webpack.DllReferencePlugin({
             context: process.cwd(),
             manifest: require(path.join(outputPath, 'ReactStuff.json'))
@@ -112,10 +114,10 @@ module.exports = smp.wrap({
         }),
         new UglifyJsPlugin({
             uglifyOptions: {
-                // compress: false,
-                // mangle: false
+                compress: false,
+                mangle: false
             }
         }),
-        // new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin()
     ]
 });

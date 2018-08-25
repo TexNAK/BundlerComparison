@@ -1,4 +1,4 @@
-User time:	[22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 21.0, 22.0, 22.0, 22.0]
-System time:	[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-Total time:	[23. 23. 23. 23. 23. 23. 22. 23. 23. 23.]
-Average time:	22.9
+User time:	[2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0]
+System time:	['Build 1', 'Build 2', 'Build 3', 'Build 4', 'Build 5', 'Build 6', 'Build 7', 'Build 8', 'Build 9', 'Build 10']
+Total time:	[2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0]
+Average time:	2.0

@@ -15,6 +15,8 @@
 \usepackage{booktabs}
 \usepackage{cite}
 \usepackage{url}
+\usepackage{float}
+\usepackage{hyperref}
 
 %%%%%%%%%%%%
 %% Colors %%
@@ -59,6 +61,16 @@
   description={ist die Zeit in welcher ein Prozess die CPU beansprucht hat. Sie unterscheidet sich von der normalen Zeit dahingehend, dass Nutzungen des Prozessors durch andere Prozesse nicht mit einfließen.},
   plural=CPU-Zeiten
 }
+\newglossaryentry{mangling}
+{
+	name=Mangling,
+	description={Komprimierung von Code durch Umbenennung von Variablen, Funktionen, Klassen und Konstanten}
+}
+\newglossaryentry{loader}
+{
+	name=Loader,
+	description={Abhängigkeit des Build-Tools, welche dafür zuständig ist, einen bestimmten Dateityp zu verarbeiten}
+}
 \makeglossaries
 \makeindex
 
@@ -98,17 +110,17 @@
 		\\
     	Dieses Transferleistung befasst sich mit der Beeinflussbarkeit der Build-Zeit eines \Gls{bundler} durch Anpassungen an der Konfiguration in Bezug auf die Geschwindigkeit des Softwareenwicklungsprozess. Ein \Gls{bundler} ist ein Tool, welches sämtliche Ressourcen und Abhängigkeiten einer \Gls{app} analysiert und in wenige Ausgabedateien zusammenfasst. Dabei werden optional Optimierungsschritte durchgeführt um die Anzahl und Größe der Ausgabedateien zu reduzieren. Sowohl die Analyse der Abhängigkeiten als auch das Bundling und die Optimierung können durch Konfigurationsdateien angepasst werden. In dieser Arbeit werden die folgenden Forschungsfragen näher beleuchtet:
 	    	\begin{enumerate}
-		    	\item Ist die Build Performance relevant für den Entwicklungsprozess?
+		    	\item Ist die Build Performance relevant für den Entwicklungsprozess? \label{question0}
 		    	\item Welche Faktoren haben eine Auswirkung auf die Dauer des Build? \label{question1}
-		    	\item Lassen sich diese Faktoren in einem Software-Projekt beeinflussen?
+		    	\item Lassen sich diese Faktoren in einem Software-Projekt beeinflussen? \label{question2}
 		    \end{enumerate}
 
 		\section{Relevanz für die PPI AG}
 			Bei der PPI AG gibt es mehrere Projekte, welche unter anderem die Entwicklung einer Web-App umfassen. Dies schließt zum Beispiel das Studenten-Verwaltungstool StuMaTo ein, welches der Verwaltung und Verteilung von Aufgaben an die Studenten dient. Dieses Tool wird in der kommenden Praxisphase von einem kleinen Team aus Studenten weiterentwickelt werden, wobei eine direkte Relevanz der Ergebnisse dieser Transferleistung sich positiv auf den Entwicklungsprozess auswirken könnte.
 			% TODO Problemstellung verteidigen: Projekttools meist vorgegeben daher Optimierung des Prozess
 	
-		% \section{Relevanz der Build Dauer}
-		% 	To be done. % TODO Write this argument
+		\section{Relevanz der Build Dauer}
+		 	To be done. Beantwortung der Forschungsfrage \ref{question0} % TODO Write this argument
 
 		\section{Methodik}
 			Um die Forschungsfrage \ref{question1} zu beantworten ist ein Projekt nötig an dem die Forschung durchgeführt werden kann.
@@ -139,60 +151,128 @@
 
 				\paragraph{Destruktive Anpassungen} Einige Änderungen haben negative Auswirkungen auf die resultierenden Build-Artefakte, wie zum Beispiel eine größere Ausgabedatei oder verminderte Browser-Kompatibilität, aber die Funktionalität in einer Entwicklungsumgebung nicht beeinträchtigen. Im dritten Schritt werden Anpassungen vorgenommen, welche solch negativen Auswirkungen haben. Diese werden wie zuvor unabhängig voneinander gemessen.
 
-				\paragraph{Gesamtbewertung} Im letzten Schritt werden sämtliche Änderungen die eine Verbesserung der Build-Zeit von $>=5\%$ bewirkt haben gemeinsam angewendet. Dies wird zuerst für die umgebungsunabhängigen Anpassungen und anschließend für alle durchgeführt. Dies dient dazu eventuelle Interaktionen von Konfigurationsänderungen abzudecken und einen Gesamtwert für die Verbesserung in der Build-Zeit zu erhalten.
+				\paragraph{Gesamtbewertung} Im letzten Schritt werden sämtliche Änderungen gemeinsam angewendet. Dies wird zuerst für die umgebungsunabhängigen Anpassungen und anschließend für alle durchgeführt. Dies dient dazu eventuelle Interaktionen von Konfigurationsänderungen abzudecken und einen Gesamtwert für die Verbesserung in der Build-Zeit zu erhalten.
 
 	\clearpage
 
 	\chapter{Durchführung}
 		\section{Ausgangslage}
 			Wie auf Seite \pageref{baseline-build} erwähnt wurde zunächst eine Basismessung durchgeführt. Die genutzte Konfigurationsdatei kann auf GitHub\footnote{https://github.com/TexNAK/WebBundlerOptimization/blob/d018b3e0db6a861c4f41e38e7265ca8f9d500319/webpack-project/webpack.config.js} gefunden werden.
-			\paragraph{Abbildung \ref{figure:baseline_duration}} zeigt die \Gls{cpuTime} der einzelnen Ausführungen. Auf der X-Achse sind die einzelnen Läufe verteilt. Die Y-Achse stellt die gemessene Zeit dar, welche in Systemzeit (also Zugriffe auf die Kernel API) und Nutzerzeit geteilt. Die Abbildung zeigt eine durchschnittliche Zeit von 26 Sekunden mit einer maximalen Abweichung von $3\%$. Aufgrund der geringen Abweichung in Verteilung und Gesamtdauer wird in den nachfolgenden Messungen nur die durchschnittliche Dauer betrachtet.
+			\paragraph{Abbildung \ref{figure:baseline_duration}} zeigt die \Gls{cpuTime} der einzelnen Ausführungen. Auf der X-Achse sind die einzelnen Läufe verteilt. Die Y-Achse stellt die gemessene Zeit dar, welche in Systemzeit (also Zugriffe auf die Kernel API) und Nutzerzeit geteilt. Die Abbildung zeigt eine durchschnittliche Zeit von $26$ Sekunden mit einer maximalen Abweichung von $3\%$. Aufgrund der geringen Abweichung in Verteilung und Gesamtdauer wird in den nachfolgenden Messungen nur die durchschnittliche Dauer betrachtet.
 			\paragraph{Abbildung \ref{figure:baseline_memory}} zeigt den Speicherverbrauch des \Gls{bundler}, wobei die X-Achse die vergangene Zeit seit Prozessstart und die Y-Achse den Speicherverbrauch in Megabyte darstellt. Auch bei diesem Graph ist nur eine geringe Abweichung vom Durchschnitt zwischen den einzelnen Durchgängen sichtbar.
+			% TODO Re-export all graphs for a unified axis scaling
 			% TODO Cite smth that defines what User and System time are
-			\begin{figure}
-                \includegraphics[width=\textwidth]{img/baseline_duration.pdf}
-                \caption{Basismessung | CPU Zeit}
-                \label{figure:baseline_duration}
-            \end{figure}
-            \begin{figure}
-                \includegraphics[width=\textwidth]{img/baseline_memory.pdf}
-                \caption{Basismessung | Speicherverbrauch}
-                \label{figure:baseline_memory}
-            \end{figure}
+			% TODO Note that all following graphs share the same axis types
+
+			% Baseline
+			\begin{figure}[p]
+	            \includegraphics[width=\textwidth]{img/baseline_duration.pdf}
+	            \caption{Basismessung | CPU Zeit}
+	            \label{figure:baseline_duration}
+	        \end{figure}
+	        \begin{figure}[p]
+	            \includegraphics[width=\textwidth]{img/baseline_memory.pdf}
+	            \caption{Basismessung | Speicherverbrauch}
+	            \label{figure:baseline_memory}
+	        \end{figure}
 
         \section{Nicht destruktive Anpassungen}
-        	\subsection{Optimierung der Minification} %measured
-        	\subsection{Scoped compilation} %measured
-        		% DLL Plugin
+        	\label{section:productionOptimizations}
+        	\subsection{Optimierung der Minifikation}
+	        	% TODO Reference https://github.com/mishoo/UglifyJS2#uglify-fast-minify-mode as a source
+        		\subsubsection{NoCompress}
+        			\label{section:minification_noCompress}
+	        		Durch das Deaktivieren der Code-Optimierung wurde die \Gls{cpuTime} um \emph{12,64} Sekunden auf \emph{13,36} Sekunden reduziert. Die Größe der Ausgabedatei hat sich dabei nur um $+2$ Kilobyte auf insgesamt $932$ KB verändert.\\
+	        		Abbildung \ref{figure:minification_noCompress_memory} zeigt eine Reduzierung des Speicherverbrauches um ca. $200$ MB.\\
+		        	Die Konfigurationsdatei für den Build können auf \href{https://github.com/TexNAK/WebBundlerOptimization/compare/master...nondestr_scopedCompilation#diff-1fb5683b1e7adbcee273b7f9f9a08a22}{GitHub} eingesehen werden.
+			        \begin{figure}[p]
+			            \includegraphics[width=\textwidth]{img/nondestr_minify_nocompress_memory}
+			            \caption{Minifikation (noCompress) | Speicherverbrauch}
+			            \label{figure:minification_noCompress_memory}
+			        \end{figure}
+
+        		\subsubsection{NoMangle}
+	        		Durch das Deaktivieren des \Gls{mangling} wurde die \Gls{cpuTime} um \emph{2,66} Sekunden auf \emph{23,34} Sekunden reduziert. Die Größe der Ausgabedatei hat sich dabei um weniger als $1$ KB verändert.\\
+	        		Abbildung \ref{figure:minification_noMangle_memory} zeigt eine Reduzierung des Speicherverbrauches um ca. $200$ MB und eine gewisse Varianz in der Laufzeit der einzelnen Buildvorgänge.\\
+        			Die Konfigurationsdatei ist großteils identisch mit der in Sektion \ref{section:minification_noCompress} gezeigten mit dem Unterschied, dass statt der Option \emph{compress} die Option \emph{mangle} auf \emph{false} gesetzt wurde.
+			        \begin{figure}[p]
+			            \includegraphics[width=\textwidth]{img/nondestr_minify_nomangle_memory}
+			            \caption{Minifikation (noMangle) | Speicherverbrauch}
+			            \label{figure:minification_noMangle_memory}
+			        \end{figure}
+
+        	\subsection{Scoped compilation}
+        		Es ist möglich einen Teil der Abhängigkeiten und auch Teile des Projektes, welche sich nur selten ändern, einmalig zu bauen und in nachfolgenden Builds lediglich einzubinden. Da die meisten Projekte zu einem Großteil aus Abhängigkeiten bestehen\footnote{Ein mit create-react-app v1.5.2 erstelltes Projekt hat 967 Dependencies mit ca. 13.000 JS-Dateien} kann dies zu signifikanten Zeitersparnissen führen. Um die Zeit zu messen wurden folgende Abhängigkeiten in einen extra Build ausgelagert:
+        		\begin{itemize}
+        			\item react
+        			\item react-dom
+        			\item @material-ui/core
+        			\item @material-ui/icons
+        			\item victory
+        			\item prop-types
+        		\end{itemize}
+        		Durch diese Auslagerung wurde die \Gls{cpuTime} des Build dadurch auf \emph{2,93} Sekunden reduziert, was eine Beschleunigung um den Faktor \emph{8,8} gegenüber der Ausgangslage darstellt. Da die größten Abhängigkeiten ausgelagert sind hängt die Dauer des Builds nun lediglich von den eigentlichen Projektdateien ab. Die sehr geringe Zeit lässt sich auf die geringe Größe des Beispiel-Projektes zurückführen. Die reale Zeitersparnis ist somit direkt von der Menge der Abhängigkeiten und Modulen des Projektes ab, welche man in einen extra Build auslagert.\\
+        		Ein weiterer Aspekt ist, dass der Speicherverbrauch des Buildprozesses ebenfalls signifikant von maximal $550$ MB auf $150$ MB gesenkt wurde, wie in Abbildung \ref{figure:scopedCompilation_memory} zu sehen ist. Auf Geräten mit geringem Arbeitsspeicher kann dies von Relevanz sein um Swapping und die damit einhergehenden Performanceverluste zu vermeiden.\\
+        		Die Konfigurationsdatei für den Build können auf \href{https://github.com/TexNAK/WebBundlerOptimization/compare/master...nondestr_scopedCompilation#diff-1fb5683b1e7adbcee273b7f9f9a08a22}{GitHub} eingesehen werden.
+
+				\begin{figure}[p]
+		            \includegraphics[width=\textwidth]{img/nondestr_scopedCompilation_memory}
+		            \caption{Scoped compilation | Speicherverbrauch}
+		            \label{figure:scopedCompilation_memory}
+		        \end{figure}
+
     		\subsection{Caching}
-    			% cache-loader
+    			Es besteht die Möglichkeit die Ausgaben ausgewählter \Gls{loader} zu cachen. In dem Beispiel Projekt macht der \emph{babel-loader} mit ca. \emph{4} Sekunden einen Großteil der Zeit aus, welche von Loadern in Anspruch genommen wird. Daher wurde dieser gecached. Als Resultat wurde die \Gls{cpuTime} auf \emph{22,9} Sekunden reduziert. Abbildung \ref{figure:cache_memory} zeigt eine Reduzierung des Speicherverbrauches um ca. $125$ MB.\\
+    			% TODO Push branch and add GitHub Link
+    			Die Konfigurationsdatei für den Build können auf \href{INSERTLINKHERE}{GitHub} eingesehen werden.
+    			
+    			\begin{figure}[p]
+		            \includegraphics[width=\textwidth]{img/nondestr_cache_memory}
+		            \caption{Cache | Speicherverbrauch}
+		            \label{figure:cache_memory}
+		        \end{figure}
 
     	\section{Destruktive Anpassungen}
-    		\subsection{Source-Maps} %measured
-    		\subsection{Inkrementelle Builds}
-    		\subsection{In-Memory-Compilation}
+    		\subsection{Source-Maps}
+    			Um den Code nach dem Build-Prozess noch debuggen zu können und Stack-Traces für Exceptions mit den entsprechenden Source-Dateien zu verbinden wird eine sogenannte Source-Map gebaut, welche die Relation zwischen den Zeilen in der Ausgabedatei und der Eingabedatei beinhalten. Im Normalfall werden diese Source-Maps für alle Dateien auf Zeilenbasis erzeugt. Es gibt die Möglichkeit die Source-Maps nur auf Modulbasis zu erzeugen. Eine Umstellung auf die modulbasierte Erzeugung resultierte in einer \Gls{cpuTime} von \emph{12} Sekunden. Sofern Source-Maps für die Entwicklung nicht benötigt werden, können sie auch komplett deaktiviert werden.\\
+    			Abbildung \ref{figure:sourceMaps_memory} zeigt, dass es keinen signifikanten Unterschied in dem Speicherverbrauch gibt.\\
+    			Die Konfigurationsdatei für den Build können auf \href{https://github.com/TexNAK/WebBundlerOptimization/compare/master...destr_cheapSourceMaps#diff-1fb5683b1e7adbcee273b7f9f9a08a22}{GitHub} eingesehen werden.
+
+				\begin{figure}[p]
+		            \includegraphics[width=\textwidth]{img/destr_sourceMaps_cheap_memory}
+		            \caption{Source Maps (modulbasiert) | Speicherverbrauch}
+		            \label{figure:sourceMaps_memory}
+		        \end{figure}
+
+    		\subsection{Inkrementelle Builds \& In-Memory-Compilation}
+    			\label{section:incrementalBuilds}
+    			Normalerweise werden die Ausgabedateien auf die Festplatte geschrieben und bei jedem Build vollständig von vorne erzeugt. Es besteht die Möglichkeit die Ausgabedateien im Speicher zu halten und darauf ausgehend inkrementelle Builds durchzuführen. Im Fall des Beispiel-Projekt wurde dadurch die \Gls{cpuTime} auf \emph{29,99} Sekunden angehoben. Dabei ist zu beachten, dass die \Gls{cpuTime} bei diesen Messungen nicht nur den reinen Build sondern auch die zusätzliche Speicherverwaltung beinhaltet. Außerdem konnte die \Gls{cpuTime} nicht wie in den vorherigen Fällen automatisch gemessen werden sondern wurde manuell dem macOS Activity-Monitor entnommen. Daher ist es leider nicht 
+
     		\subsection{\Gls{hmr}}
+    			Ein weiteres Feature ist das sogenannte \Gls{hmr}. Dies ermöglicht es einen Teil der Website neu zu bauen und das alte Modul in einer offenen Instanz der Seite durch das neue zu ersetzen. Dieses Feature setzt jedoch die in Sektion \ref{section:incrementalBuilds} beschriebene In-Memory-Compilation voraus. Im Durchschnitt nahm der Build \emph{35,42} Sekunden \Gls{cpuTime} in Anspruch.
 
 		\section{Gesamtbewertung}
 			\subsection{Umgebungsunabhängig}
+				Wenn man sämtliche in Sektion \ref{section:productionOptimizations} beschriebenen Optimierungen in einer Konfiguration zusammenfasst und gemeinsam anwendet, so erreicht man bei dem Beispiel-Projekt eine \Gls{cpuTime} von \emph{2} Sekunden. Da diese Zeit mit der durch Scoped Compilation alleine erreichten Zeit übereinstimmt ist zu vermuten, dass die anderen beschriebenen Optimierungen hauptsächlich die Abhängigkeiten betroffen haben, welche durch Scoped Compilation aus dem Build ausgeschlossen wurden.
 			\subsection{Destruktiv}
+				Fügt man alle Anpassungen zusammen so erreicht man eine durchschnittliche Build-Zeit von insgesamt \emph{2,6} Sekunden. Da der Build nun aber In-Memory durchgeführt wird, führt der \emph{cache-loader} zu zusätzlichem Overhead, da die Zwischenschritte des Builds auf der Festplatte gespeichert werden. Lässt man diesen aus der Konfiguration raus, so erreicht man eine Zeit von \emph{1,08} Sekunden.
 
 	\chapter{Auswertung}
 		Let's hope it got improved! % TODO Evaluate what happened
 		
 		\section{Beeinflussbarkeit der Build Dauer}
-			To be done. % TODO Write this argument
-			% Note the following which broadens the applicability of the results:
-			%  Da Webpack wie die meisten \Glspl{bundler} intern Tools wie z.B. BabelJS\footnote{https://babeljs.io} oder UglifyJS\footnote{http://lisperator.net/uglifyjs/} ausführt sollte es möglich sein ein Großteil der aufgedeckten
+			To be done. Beantwortung der Forschungsfrage \label{question2} % TODO Write this argument
 
 		\section{Zusammenfassung}
-			Whatever. % TODO What have we learned?
+			What have we learned? What haven't we looked at (Multithreading, Code-Splitting, ...) % TODO Write this argument
+			
     \pagebreak
 
     %%%%%%%%%%%%%%
     %% Appendix %%
     %%%%%%%%%%%%%%
-    \hspace{0pt}
+    \chapter{Appendix}
+	    \hspace{0pt}
     \vfill
     \subsection*{Eidesstattliche Erklärung}
         Hiermit erkläre ich an Eides statt, dass ich die vorliegende Arbeit ohne Hilfe Dritter und ohne Benutzung anderer als der angegebenen Hilfsmittel angefertigt habe. Die aus fremden Quellen direkt oder indirekt übernommenen Gedanken sind als solche kenntlich gemacht. Die Arbeit wurde bisher in gleicher oder ähnlicher Form weder von mir noch von jemand anderem als Prüfungsleistung vorgelegt.
@@ -201,9 +281,11 @@
     \vfill
     \hspace{0pt}
 
+
     \glsaddall
     \printglossary
     \printglossary[type=\acronymtype]
+
 
     \nocite{*}
     \bibliography{main.bib}
