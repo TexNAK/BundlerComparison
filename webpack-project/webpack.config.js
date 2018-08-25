@@ -14,7 +14,7 @@ module.exports = smp.wrap({
     devtool: 'source-map',
     // devtool: 'cheap-module-eval-source-map',
     devServer: {
-        // hot: true,
+        hot: true,
         contentBase: './dist'
     },
     output: {
@@ -63,10 +63,10 @@ module.exports = smp.wrap({
                             options: {
                                 compact: true,
                                 cacheDirectory: true,
-                                // plugins: ['react-hot-loader/babel', 'transform-class-properties'],
-                                // presets: ['env', 'react', 'react-hmre']
-                                plugins: ['transform-class-properties'],
-                                presets: ['env', 'react']
+                                plugins: ['react-hot-loader/babel', 'transform-class-properties'],
+                                presets: ['env', 'react', 'react-hmre']
+                                // plugins: ['transform-class-properties'],
+                                // presets: ['env', 'react']
                             }
                         }
                     },
@@ -130,6 +130,6 @@ module.exports = smp.wrap({
                 // }
             }
         }),
-        // new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin()
     ]
 });
