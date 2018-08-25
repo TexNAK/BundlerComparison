@@ -189,7 +189,7 @@ finalUserTime = getLastValues(userTimeData)[2::]
 finalSystemTime = getLastValues(systemTimeData)[2::]
 finalTotalTime = numpy.add(finalSystemTime, finalUserTime)
 avgTotalTime = numpy.average(finalTotalTime)
-with open("data/times.txt", "a") as times:
+with open("data/times.txt", "w") as times:
     times.write("User time:\t" + str(finalUserTime) + "\n")
     times.write("System time:\t" + str(finalSystemTime) + "\n")
     times.write("Total time:\t" + str(finalTotalTime) + "\n")

@@ -58,7 +58,7 @@ module.exports = smp.wrap({
                     {
                         test: /\.(js|jsx)$/,
                         exclude: /(node_modules|bower_components)/,
-                        use: {
+                        use: ['cache-loader', {
                             loader: 'babel-loader',
                             options: {
                                 compact: true,
@@ -68,7 +68,7 @@ module.exports = smp.wrap({
                                 plugins: ['transform-class-properties'],
                                 presets: ['env', 'react']
                             }
-                        }
+                        }]
                     },
                     {
                         loader: require.resolve('file-loader'),
@@ -106,7 +106,7 @@ module.exports = smp.wrap({
         }),
         new UglifyJsPlugin({
             uglifyOptions: {
-                compress: false,
+                // compress: false,
                 // mangle: false
                 // compress: {
                 //     arrows: false,
