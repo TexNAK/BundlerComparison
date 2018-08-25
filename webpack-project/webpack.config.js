@@ -13,8 +13,6 @@ const outputPath = path.join(process.cwd(), 'dist');
 module.exports = smp.wrap({
     mode: 'development',
     entry: './src/index.jsx',
-    // devtool: 'source-map',
-    // # Cheap source maps
     devtool: 'cheap-module-eval-source-map',
     devServer: {
         hot: true,
@@ -26,7 +24,6 @@ module.exports = smp.wrap({
     },
     module: {
         rules: [
-            // Run the linter
             {
                 test: /\.(js|jsx)$/,
                 enforce: 'pre',
@@ -68,8 +65,6 @@ module.exports = smp.wrap({
                                 cacheDirectory: true,
                                 plugins: ['react-hot-loader/babel', 'transform-class-properties'],
                                 presets: ['env', 'react', 'react-hmre']
-                                // plugins: ['transform-class-properties'],
-                                // presets: ['env', 'react']
                             }
                         }]
                     },
@@ -86,12 +81,10 @@ module.exports = smp.wrap({
     },
     optimization: {
         splitChunks: {
-            // include all types of chunks
             chunks: 'all'
         }
     },
     plugins: [
-        // # Scoped compilation
         new webpack.DllReferencePlugin({
             context: process.cwd(),
             manifest: require(path.join(outputPath, 'ReactStuff.json'))
