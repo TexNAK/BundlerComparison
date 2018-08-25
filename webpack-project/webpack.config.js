@@ -112,7 +112,7 @@ module.exports = smp.wrap({
         }),
         new UglifyJsPlugin({
             uglifyOptions: {
-                // compress: false,
+                compress: false,
                 // mangle: false
             }
         }),
