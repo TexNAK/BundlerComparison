@@ -58,7 +58,7 @@
 \newglossaryentry{cpuTime}
 {
   name=CPU-Zeit,
-  description={ist die Zeit in welcher ein Prozess die CPU beansprucht hat. Sie unterscheidet sich von der normalen Zeit dahingehend, dass Nutzungen des Prozessors durch andere Prozesse nicht mit einfließen.},
+  description={ist die Zeit in welcher ein Prozess Instruktionen auf der CPU ausgeführt hat. Sie unterscheidet sich von der normalen Zeit dahingehend, dass Nutzungen des Prozessors durch andere Prozesse sowie Festplatteninteraktionen nicht mit einfließen\cite{definition:cpuTime}},
   plural=CPU-Zeiten
 }
 \newglossaryentry{mangling}
@@ -129,20 +129,17 @@
 			\subsection{Beispiel-Projekt}
 				Im Rahmen dieser Transferleistung wird eine rudimentäre \Gls{app} aufgesetzt, welche sich vom Umfang auf die für den Build Prozess relevanten Kriterien beschränkt und eine Analyse der Faktoren ermöglichen soll, welche einen Einfluss auf die Build Zeit haben.
 
-				\paragraph{Bundling Tool} In vielen Projekten wird die zu nutzende Technologie meist von Projektleitern oder Kunden vorgeschrieben. Entsprechend wurde für dieses Projekt der am weitesten verbreitete\footnote{\url{http://www.npmtrends.com/webpack-vs-parcel-bundler-vs-rollup-vs-browserify}} \Gls{bundler} \emph{Webpack} verwendet um eine möglichst einfache Übertragung der Konfigurationsoptionen auf andere Projekte zu ermöglichen.
+				\paragraph{Bundling Tool} In vielen Projekten wird die zu nutzende Technologie meist von Projektleitern oder Kunden vorgeschrieben. Entsprechend wurde für dieses Projekt der am weitesten verbreitete\cite{npmtrends:wab} \Gls{bundler} \emph{Webpack} verwendet um eine möglichst einfache Übertragung der Konfigurationsoptionen auf andere Projekte zu ermöglichen.
 
-				\paragraph{React} Bei der Entwicklung von \Glspl{app} werden häufig Frameworks wie z.B. React, Angular oder VueJS verwendet. In diesem Projekt wird \emph{React} aufgrund seiner Popularität\footnote{\url{http://www.npmtrends.com/angular-vs-ember-source-vs-react-vs-vue}} und den vorhandenen Kenntnissen des Authors verwendet.
+				\paragraph{React} Bei der Entwicklung von \Glspl{app} werden häufig Frameworks wie z.B. React, Angular oder VueJS verwendet. In diesem Projekt wird \emph{React} aufgrund seiner Popularität\cite{npmtrends:frameworks} und den vorhandenen Kenntnissen des Authors verwendet.
 
-				\paragraph{Material UI} Als Library für grafische Komponenten wurde das Projekt \emph{Material UI}\footnote{\url{https://material-ui.com}} gewählt, da es aufgrund der vorhandenen Beispiel in der Dokumentation ein schnelles Prototyping der Dummy-UI ermöglicht. Außerdem wurde die Schriftart Roboto und das Material-UI Icon-Set von Google eingebunden, da sie den UI Guidelines\footnote{\url{https://material.io/design/introduction}} der Library entsprechen und von dieser empfohlen werden.
+				\paragraph{Material UI} Als Library für grafische Komponenten wurde das Projekt \emph{Material UI}\cite{frameworks:material-ui} gewählt, da es aufgrund der vorhandenen Beispiel in der Dokumentation ein schnelles Prototyping der Dummy-UI ermöglicht. Außerdem wurde die Schriftart Roboto und das Material-UI Icon-Set von Google eingebunden, da sie den UI Guidelines\cite{guidelines:material-ui} der Library entsprechen und von dieser empfohlen werden.
 
-				\paragraph{Victory Graphs} Um den Umfang des Projektes zu erweitern und ein möglichst realistisches Szenario für die Build-Zeit zu erreichen wurde zusätzlich eine Abhängigkeit für Diagramme eingebunden. Hierbei wurde \emph{Victory}\footnote{\url{https://formidable.com/open-source/victory/}} gewählt, da es eine einfache und gut dokumentierte Integration mit React bietet.
+				\paragraph{Victory Graphs} Um den Umfang des Projektes zu erweitern und ein möglichst realistisches Szenario für die Build-Zeit zu erreichen wurde zusätzlich eine Abhängigkeit für Diagramme eingebunden. Hierbei wurde \emph{Victory}\cite{frameworks:victory} gewählt, da es eine einfache und gut dokumentierte Integration mit React bietet.
 
 			\subsection{Messverfahren}
-				Die Dauer des Build wird der Ausgabe des Build-Tool Webpack entnommen. Um eventuelle Ungenauigkeiten durch Unterschiede in der Prozessorauslastung oder eventuelle Caches zu minimieren wird der Build mehrfach ausgeführt und die durchschnittliche Dauer berechnet. Dabei wird der erste Build nach Anpassung der Konfigurationsdatei nicht mit in die Wertung einbezogen, da er mögliche Abweichungen durch Caching der neuen Einstellungen aufweisen könnte. Anschließend werden für jeden Datenpunkt jeweils zwei Builds ausgeführt um ein realistisches Szenario zu schaffen. Der erste Build wird dabei mit der Ausgangslage des Projekt durchgeführt. Im Anschluss wird der Inhalt einer Datei verändert und ein weiterer Vorgang gestartet. Die \Gls{cpuTime}, die dieser zweite Build benötigt, wird gemessen und in die Wertung aufgenommen.
-				% TODO Name a fixed number of runs (10)
-				% TODO Note the capturing of a memory usage profile
-				% TODO Reference the script on GitHub
-	
+				Die Dauer des Build wird der Ausgabe des Build-Tool Webpack entnommen. Um eventuelle Ungenauigkeiten durch Unterschiede in der Prozessorauslastung oder eventuelle Caches zu minimieren wird der Build mehrfach ausgeführt und die durchschnittliche Dauer berechnet. Dabei wird der erste Build nach Anpassung der Konfigurationsdatei nicht mit in die Wertung einbezogen, da er mögliche Abweichungen durch Caching der neuen Einstellungen aufweisen könnte. Anschließend werden für jeden Datenpunkt jeweils zwei Builds ausgeführt um ein realistisches Szenario zu schaffen. Der erste Build wird dabei mit der Ausgangslage des Projekt durchgeführt. Im Anschluss wird der Inhalt einer Datei verändert und ein weiterer Vorgang gestartet. Die \Gls{cpuTime}, die dieser zweite Build benötigt, wird gemessen und in die Wertung aufgenommen. Abbildung \ref{figure:baseline_duration} zeigt, dass es nur minimale Abweichungen von $\pm 3\%$ zwischen den einzelnen Datenpunkten gibt. Entsprechend werden zehn Datenpunkte erfasst und der Durchschnitt gebildet.\\
+				Das Messverfahren wurde durch ein Python-Script automatisiert. Das Script ist auf \href{https://github.com/TexNAK/WebBundlerOptimization/blob/40c8c00dee7af6970bc82c29e2fc0f3cfd6c12eb/webpack-project/runBuilds.py}{GitHub} zu finden. Zusätzlich zu der \Gls{cpuTime} nimmt das Script ein Speicherprofil auf, welches im Folgenden genutzt wird um Optimierungen in der Speichernutzung zu finden\footnote{Da ein zu hoher Speicherverbrauch auf Geräten mit geringem Arbeitsspeicher zu Swapping und somit Performanceverlusten führen kann, wird dieses mit beleuchtet.}.
 				\paragraph{Gerät} Sämtliche Builds werden auf einem Retina MacBook aus dem Jahr 2017 mit 8GB RAM und einem Intel Core i7 mit macOS 10.14 durchgeführt. Während des Build werden sämtliche Anwendungen, welche nicht für die Ausführung des Betriebssystems oder des Builds kritisch sind, geschlossen um eine möglichst reproduzierbare Umgebung zu schaffen. Es wird dabei darauf geachtet, dass das Gerät während der Messungen an eine Stromquelle angeschlossen und ausreichend gekühlt ist, um CPU throttling zu vermeiden.
 
 			\subsection{Gruppierung der Anpassungen}
@@ -158,13 +155,11 @@
 	\clearpage
 
 	\chapter{Durchführung}
+		Bis auf Abschnitt \ref{section:minification} sind alle Anpassungen an der Konfiguration durch die Dokumentations-Website von Webpack inspiriert worden\cite{optimization-source:webpack}.
+	
 		\section{Ausgangslage}
-			Wie auf Seite \pageref{baseline-build} erwähnt wurde zunächst eine Basismessung durchgeführt. Die genutzte Konfigurationsdatei kann auf GitHub\footnote{https://github.com/TexNAK/WebBundlerOptimization/blob/d018b3e0db6a861c4f41e38e7265ca8f9d500319/webpack-project/webpack.config.js} gefunden werden.
-			\paragraph{Abbildung \ref{figure:baseline_duration}} zeigt die \Gls{cpuTime} der einzelnen Ausführungen. Auf der X-Achse sind die einzelnen Läufe verteilt. Die Y-Achse stellt die gemessene Zeit dar, welche in Systemzeit (also Zugriffe auf die Kernel API) und Nutzerzeit geteilt. Die Abbildung zeigt eine durchschnittliche Zeit von $26$ Sekunden mit einer maximalen Abweichung von $3\%$. Aufgrund der geringen Abweichung in Verteilung und Gesamtdauer wird in den nachfolgenden Messungen nur die durchschnittliche Dauer betrachtet.
-			\paragraph{Abbildung \ref{figure:baseline_memory}} zeigt den Speicherverbrauch des \Gls{bundler}, wobei die X-Achse die vergangene Zeit seit Prozessstart und die Y-Achse den Speicherverbrauch in Megabyte darstellt. Auch bei diesem Graph ist nur eine geringe Abweichung vom Durchschnitt zwischen den einzelnen Durchgängen sichtbar.
-			% TODO Re-export all graphs for a unified axis scaling
-			% TODO Cite smth that defines what User and System time are
-			% TODO Note that all following graphs share the same axis types
+			Wie auf Seite \pageref{baseline-build} erwähnt wurde zunächst eine Basismessung durchgeführt. Die genutzte Konfigurationsdatei kann auf \href{https://github.com/TexNAK/WebBundlerOptimization/blob/d018b3e0db6a861c4f41e38e7265ca8f9d500319/webpack-project/webpack.config.js}{GitHub} gefunden werden.			\paragraph{Abbildung \ref{figure:baseline_duration}} zeigt die \Gls{cpuTime} der einzelnen Ausführungen. Auf der X-Achse sind die einzelnen Läufe verteilt. Die Y-Achse stellt die gemessene Zeit dar, welche in Systemzeit und Nutzerzeit geteilt ist. Die Abbildung zeigt eine durchschnittliche Zeit von $26$ Sekunden mit einer maximalen Abweichung von $3\%$. Aufgrund der geringen Abweichung in Verteilung und Gesamtdauer wird in den nachfolgenden Messungen nur die durchschnittliche Dauer betrachtet.
+			\paragraph{Abbildung \ref{figure:baseline_memory}} zeigt den Speicherverbrauch des \Gls{bundler}, wobei die X-Achse die vergangene Zeit seit Prozessstart und die Y-Achse den Speicherverbrauch in Megabyte darstellt. Die beschriebenen Achsen treffen auf alle nachfolgenden Abbildungen des Speicherverbrauches zu. Auch bei diesem Graph ist nur eine geringe Abweichung vom Durchschnitt zwischen den einzelnen Durchgängen sichtbar.
 
 			\begin{figure}[p]
 	            \includegraphics[width=\textwidth]{img/baseline_duration.pdf}
@@ -180,7 +175,8 @@
         \section{Nicht destruktive Anpassungen}
         	\label{section:productionOptimizations}
         	\subsection{Optimierung der Minifikation}
-	        	% TODO Reference https://github.com/mishoo/UglifyJS2#uglify-fast-minify-mode as a source
+        		\label{section:minification}
+	        	Das Ersetzen von Leerzeichen und Zeilenumbrüchen einen Großteil der Minifikation aus. Das umstrukturieren von Code hingegen ist zeitaufwändig und bringt vergleichsweise geringe Verbesserungen\cite{optimization-source:minify}.
         		\subsubsection{NoCompress}
         			\label{section:minification_noCompress}
 	        		Durch das Deaktivieren der Code-Optimierung wurde die \Gls{cpuTime} um \emph{12,64} Sekunden auf \emph{13,36} Sekunden reduziert. Die Größe der Ausgabedatei hat sich dabei nur um $+2$ Kilobyte auf insgesamt $932$ KB verändert.\\
